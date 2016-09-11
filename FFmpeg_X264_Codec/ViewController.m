@@ -43,6 +43,23 @@ BGRA
     UIButton                        *recordVideoButton;
     
     X264Manager                     *manager264;
+    
+    CGSize                           videoSize;
+}
+
+- (CGSize)getVideoSize:(NSString *)sessionPreset {
+    CGSize size = CGSizeZero;
+    if ([sessionPreset isEqualToString:AVCaptureSessionPresetMedium]) {
+        size = CGSizeMake(480, 360);
+    } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset1920x1080]) {
+        size = CGSizeMake(1920, 1080);
+    } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset1280x720]) {
+        size = CGSizeMake(1280, 720);
+    } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset640x480]) {
+        size = CGSizeMake(640, 480);
+    }
+    
+    return size;
 }
 
 - (void)viewDidLoad {
@@ -51,9 +68,10 @@ BGRA
     
 #pragma mark -- AVCaptureSession init
     captureSession = [[AVCaptureSession alloc] init];
-//    captureSession.sessionPreset = AVCaptureSessionPresetHigh;
-    captureSession.sessionPreset = AVCaptureSessionPresetMedium;
+//    captureSession.sessionPreset = AVCaptureSessionPresetMedium;
+    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
     
+    videoSize = [self getVideoSize:captureSession.sessionPreset];
     
     captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
@@ -151,7 +169,7 @@ BGRA
         #pragma mark -- manager X264
         manager264 = [[X264Manager alloc]init];
         [manager264 setFileSavedPath:[self savedFilePath]];
-        [manager264 setX264Resource];
+        [manager264 setX264ResourceWithVideoWidth:videoSize.width height:videoSize.height];
         
         [captureSession startRunning];
 
@@ -192,7 +210,7 @@ BGRA
 
 #pragma mark --
 #pragma mark -- 锁定屏幕为竖屏
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

@@ -66,17 +66,12 @@ extern "C" {
 /*
  *  设置X264
  */
-- (int)setX264Resource
+- (int)setX264ResourceWithVideoWidth:(int)width height:(int)height
 {
     framecnt = 0;
-    
-    // AVCaptureSessionPresetMedium
-    encoder_h264_frame_width = 480;
-    encoder_h264_frame_height = 360;
 
-    // AVCaptureSessionPresetHigh
-//    encoder_h264_frame_width = 1920;
-//    encoder_h264_frame_height = 1080;
+    encoder_h264_frame_width = width;
+    encoder_h264_frame_height = height;
     
     av_register_all(); // 注册FFmpeg所有编解码器
     

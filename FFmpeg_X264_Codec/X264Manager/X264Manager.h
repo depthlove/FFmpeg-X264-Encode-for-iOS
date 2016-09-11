@@ -20,7 +20,7 @@
  * 设置X264
  * 0: 成功； －1: 失败
  */
-- (int)setX264Resource;
+- (int)setX264ResourceWithVideoWidth:(int)width height:(int)height;
 
 /*
  * 将CMSampleBufferRef格式的数据编码成h264并写入文件
