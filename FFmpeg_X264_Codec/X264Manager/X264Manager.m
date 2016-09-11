@@ -66,7 +66,7 @@ extern "C" {
 /*
  *  设置X264
  */
-- (int)setX264ResourceWithVideoWidth:(int)width height:(int)height
+- (int)setX264ResourceWithVideoWidth:(int)width height:(int)height bitrate:(int)bitrate
 {
     framecnt = 0;
 
@@ -108,7 +108,7 @@ extern "C" {
     pCodecCtx->height = encoder_h264_frame_height;
     pCodecCtx->time_base.num = 1;
     pCodecCtx->time_base.den = 15;
-    pCodecCtx->bit_rate = 400000;
+    pCodecCtx->bit_rate = bitrate;
     pCodecCtx->gop_size = 250;
     // H264
     // pCodecCtx->me_range = 16;

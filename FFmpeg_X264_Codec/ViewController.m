@@ -69,7 +69,7 @@ BGRA
 #pragma mark -- AVCaptureSession init
     captureSession = [[AVCaptureSession alloc] init];
 //    captureSession.sessionPreset = AVCaptureSessionPresetMedium;
-    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
+    captureSession.sessionPreset = AVCaptureSessionPreset1920x1080;
     
     videoSize = [self getVideoSize:captureSession.sessionPreset];
     
@@ -169,7 +169,7 @@ BGRA
         #pragma mark -- manager X264
         manager264 = [[X264Manager alloc]init];
         [manager264 setFileSavedPath:[self savedFilePath]];
-        [manager264 setX264ResourceWithVideoWidth:videoSize.width height:videoSize.height];
+        [manager264 setX264ResourceWithVideoWidth:videoSize.width height:videoSize.height bitrate:1500000];
         
         [captureSession startRunning];
 
