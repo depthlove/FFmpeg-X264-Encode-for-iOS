@@ -24,6 +24,12 @@ BGRA
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "X264Manager.h"
+#import "OpenGLView.h"
+
+// 1 : 编码模式
+// 0 : 渲染模式，当前只能渲染 32BGRA，后续增加 NV12 的渲染支持
+// 将 encodeModel 设置为1，就是编码采集到视频数据；将 encodeModel 设置为0，就是渲染采集到的视频数据
+#define encodeModel 1
 
 @interface ViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
@@ -45,6 +51,8 @@ BGRA
     X264Manager                     *manager264;
     
     CGSize                           videoSize;
+    
+    OpenGLView                      *openglView;
 }
 
 - (CGSize)getVideoSize:(NSString *)sessionPreset {
@@ -87,10 +95,21 @@ BGRA
     
     captureVideoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [captureVideoDataOutput setSampleBufferDelegate:self queue:queue];
+
+#if encodeModel
+    // nv12
     NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              [NSNumber numberWithUnsignedInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange],
+                              [NSNumber numberWithUnsignedInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange],
                               kCVPixelBufferPixelFormatTypeKey,
-                              nil]; // X264_CSP_NV12
+                              nil];
+#else
+    // 32bgra
+    NSDictionary *settings = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA],
+                              kCVPixelBufferPixelFormatTypeKey,
+                              nil];
+#endif
+    
     captureVideoDataOutput.videoSettings = settings;
     captureVideoDataOutput.alwaysDiscardsLateVideoFrames = YES;
     
@@ -108,6 +127,10 @@ BGRA
     [[previewLayer connection] setVideoOrientation:AVCaptureVideoOrientationPortrait]; // 设置视频的朝向
     [self.view.layer addSublayer:previewLayer];
 
+#pragma mark -- OpenGLView init
+    openglView = [[OpenGLView alloc] initWithFrame:CGRectMake(0, 80, 240, 135)];
+    [self.view addSubview:openglView];
+    
 #pragma mark -- Button init
     recordVideoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     recordVideoButton.frame = CGRectMake(45, self.view.frame.size.height - 60 - 15, 60, 60);
@@ -127,7 +150,6 @@ BGRA
     
     [recordVideoButton addTarget:self action:@selector(recordVideo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:recordVideoButton];
-    
 }
 
 // 当前系统时间
@@ -172,7 +194,6 @@ BGRA
         [manager264 setX264ResourceWithVideoWidth:videoSize.width height:videoSize.height bitrate:1500000];
         
         [captureSession startRunning];
-
     } else {
         
         NSLog(@"stopRecord!!!");
@@ -196,8 +217,32 @@ BGRA
         // Video
 //        NSLog(@"在这里获得video sampleBuffer，做进一步处理（编码H.264）");
         
+#if encodeModel
+        // encode
         [manager264 encoderToH264:sampleBuffer];
+#else
+        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        
+//        int pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+//        switch (pixelFormat) {
+//            case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
+//                NSLog(@"Capture pixel format=NV12");
+//                break;
+//            case kCVPixelFormatType_422YpCbCr8:
+//                NSLog(@"Capture pixel format=UYUY422");
+//                break;
+//            default:
+//                NSLog(@"Capture pixel format=RGB32");
+//                break;
+//        }
+        
+        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
 
+        // render
+        [openglView render:pixelBuffer];
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+#endif
     }
 //    else if (connection == _audioConnection) {
 //        
