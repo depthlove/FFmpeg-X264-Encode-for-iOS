@@ -10,6 +10,7 @@
 		0ACB60A91D859D5100319CF5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACB60A81D859D5100319CF5 /* OpenGLES.framework */; };
 		0ACB60AB1D859D5700319CF5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACB60AA1D859D5700319CF5 /* QuartzCore.framework */; };
 		0ACB60B01D85DD4800319CF5 /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACB60AF1D85DD4800319CF5 /* OpenGLView.m */; };
+		0ADB887D1F7F57AF003D1178 /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADB887C1F7F57AF003D1178 /* PlayViewController.m */; };
 		76C254E11B9DAEB700CE60B2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76C254E01B9DAEB700CE60B2 /* main.m */; };
 		76C254E41B9DAEB700CE60B2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76C254E31B9DAEB700CE60B2 /* AppDelegate.m */; };
 		76C254E71B9DAEB700CE60B2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76C254E61B9DAEB700CE60B2 /* ViewController.m */; };
@@ -50,6 +51,8 @@
 		0ACB60AA1D859D5700319CF5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0ACB60AE1D85DD4800319CF5 /* OpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView.h; sourceTree = "<group>"; };
 		0ACB60AF1D85DD4800319CF5 /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView.m; sourceTree = "<group>"; };
+		0ADB887B1F7F57AF003D1178 /* PlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
+		0ADB887C1F7F57AF003D1178 /* PlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
 		76C254DB1B9DAEB700CE60B2 /* FFmpeg_X264_Codec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg_X264_Codec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76C254DF1B9DAEB700CE60B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76C254E01B9DAEB700CE60B2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				76C254E31B9DAEB700CE60B2 /* AppDelegate.m */,
 				76C254E51B9DAEB700CE60B2 /* ViewController.h */,
 				76C254E61B9DAEB700CE60B2 /* ViewController.m */,
+				0ADB887B1F7F57AF003D1178 /* PlayViewController.h */,
+				0ADB887C1F7F57AF003D1178 /* PlayViewController.m */,
 				76C254EB1B9DAEB700CE60B2 /* Images.xcassets */,
 				76C254ED1B9DAEB700CE60B2 /* LaunchScreen.xib */,
 				76C254DE1B9DAEB700CE60B2 /* Supporting Files */,
@@ -577,6 +582,7 @@
 				TargetAttributes = {
 					76C254DA1B9DAEB700CE60B2 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = UVZ7B46BL3;
 					};
 					76C254F31B9DAEB800CE60B2 = {
 						CreatedOnToolsVersion = 6.4;
@@ -632,6 +638,7 @@
 				76C254E11B9DAEB700CE60B2 /* main.m in Sources */,
 				76C255881B9DB39900CE60B2 /* X264Manager.m in Sources */,
 				0ACB60B01D85DD4800319CF5 /* OpenGLView.m in Sources */,
+				0ADB887D1F7F57AF003D1178 /* PlayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,6 +761,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UVZ7B46BL3;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -770,6 +778,7 @@
 					"$(PROJECT_DIR)/FFmpeg_X264_Codec/x264-iOS/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stm.FFmpeg-X264-Codec";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7";
 			};
@@ -779,6 +788,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UVZ7B46BL3;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -795,6 +805,7 @@
 					"$(PROJECT_DIR)/FFmpeg_X264_Codec/x264-iOS/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stm.FFmpeg-X264-Codec";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "arm64 armv7";
 			};

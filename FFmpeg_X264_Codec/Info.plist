@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sunminmin.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -22,6 +22,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>CameraUsageDescription</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MicrophoneUsageDescription</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PhotoLibraryUsageDescription</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -41,11 +47,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>MicrophoneUsageDescription</string>
-	<key>NSCameraUsageDescription</key>
-	<string>CameraUsageDescription</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>PhotoLibraryUsageDescription</string>
 </dict>
 </plist>
