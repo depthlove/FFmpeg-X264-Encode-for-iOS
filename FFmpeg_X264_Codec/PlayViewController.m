@@ -77,6 +77,8 @@
 }
 
 - (void)startButtonEvent:(id)sender {
+    // current YUV render is processed in main thread, so you must be adjust it based on the actual situation.
+    // 解码和渲染操作在主线程中执行，会阻塞其它操作。需要根据实际使用场景做调整。
     [self displayImage];
 }
 
