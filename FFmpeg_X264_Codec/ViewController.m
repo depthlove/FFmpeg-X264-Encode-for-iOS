@@ -19,7 +19,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    UIButton *recordButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 62, 62)];
+    UIButton *recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    recordButton.frame = CGRectMake(0, 0, 62, 62);
     recordButton.center = CGPointMake(CGRectGetWidth([UIScreen mainScreen].bounds) / 2, CGRectGetHeight([UIScreen mainScreen].bounds) / 2);
     recordButton.backgroundColor = [UIColor redColor];
     recordButton.layer.cornerRadius = 31;

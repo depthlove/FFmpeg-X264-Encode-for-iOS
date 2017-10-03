@@ -1,5 +1,5 @@
 //
-//  PlayViewController.h
+//  RecordViewController.h
 //  FFmpeg_X264_Codec
 //
 //  Created by suntongmian on 2017/9/30.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlayViewController : UIViewController
-
-@property (strong, nonatomic) NSString *h264FilePath;
+@interface RecordViewController : UIViewController
 
 @end
