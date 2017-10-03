@@ -39,16 +39,17 @@
     path = self.h264FilePath;
     
     videoFrameYUV = [[STMVideoFrameYUV alloc] init];
-    stmGLView = [[STMGLView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) videoFrameSize:CGSizeMake(1280, 720) videoFrameFormat:STMVideoFrameFormatYUV];
+    stmGLView = [[STMGLView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) videoFrameSize:self.videoConfiguration.videoSize videoFrameFormat:STMVideoFrameFormatYUV];
     [self.view addSubview:stmGLView];
     
+    // 返回
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(15, self.view.frame.size.height - 50 - 15, 50, 50);
     CGFloat lineWidth = backButton.frame.size.width * 0.12f;
     backButton.layer.cornerRadius = backButton.frame.size.width / 2;
-    backButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    backButton.layer.borderColor = [UIColor greenColor].CGColor;
     backButton.layer.borderWidth = lineWidth;
-    [backButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [backButton setTitle:@"返回" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
@@ -57,9 +58,9 @@
     UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startButton.frame = CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - 50 - 15, 50, 50);
     lineWidth = backButton.frame.size.width * 0.12f;
-    backButton.layer.cornerRadius = backButton.frame.size.width / 2;
-    backButton.layer.borderColor = [UIColor greenColor].CGColor;
-    backButton.layer.borderWidth = lineWidth;
+    startButton.layer.cornerRadius = startButton.frame.size.width / 2;
+    startButton.layer.borderColor = [UIColor greenColor].CGColor;
+    startButton.layer.borderWidth = lineWidth;
     [startButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [startButton setTitle:@"开始" forState:UIControlStateNormal];
     [startButton addTarget:self action:@selector(startButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
@@ -129,7 +130,7 @@
     av_new_packet(packet, y_size);
     
     printf("video infomation：\n");
-    av_dump_format(pFormatCtx,0,filepath,0);
+    av_dump_format(pFormatCtx, 0, filepath, 0);
     
     while(av_read_frame(pFormatCtx, packet) >= 0) {
         if(packet->stream_index==videoindex) {
@@ -178,9 +179,11 @@
                 videoFrameYUV.chromaB = planU;
                 videoFrameYUV.chromaR = planV;
                 
+                // 控制渲染速度
+                usleep(1000*1000*1.0/self.videoConfiguration.frameRate);
+                
                 // 渲染 i420
                 [stmGLView render:videoFrameYUV];
-                
                 
                 free(buf);
             }

@@ -51,18 +51,32 @@
     WriteH264Streaming              *writeH264Streaming;
     
     NSString                        *h264FilePath;
+    BOOL                             isVideoPortrait;
+    CGSize                           captureVideoSize;
 }
 
-- (CGSize)getVideoSize:(NSString *)sessionPreset {
+- (CGSize)getVideoSize:(NSString *)sessionPreset isVideoPortrait:(BOOL)isVideoPortrait {
     CGSize size = CGSizeZero;
     if ([sessionPreset isEqualToString:AVCaptureSessionPresetMedium]) {
-        size = CGSizeMake(480, 360);
+        if (isVideoPortrait)
+            size = CGSizeMake(360, 480);
+        else
+            size = CGSizeMake(480, 360);
     } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset1920x1080]) {
-        size = CGSizeMake(1920, 1080);
+        if (isVideoPortrait)
+            size = CGSizeMake(1080, 1920);
+        else
+            size = CGSizeMake(1920, 1080);
     } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset1280x720]) {
-        size = CGSizeMake(1280, 720);
+        if (isVideoPortrait)
+            size = CGSizeMake(720, 1280);
+        else
+            size = CGSizeMake(1280, 720);
     } else if ([sessionPreset isEqualToString:AVCaptureSessionPreset640x480]) {
-        size = CGSizeMake(640, 480);
+        if (isVideoPortrait)
+            size = CGSizeMake(480, 640);
+        else
+            size = CGSizeMake(640, 480);
     }
     
     return size;
@@ -74,9 +88,14 @@
     
     encodeQueue = dispatch_queue_create(DISPATCH_QUEUE_SERIAL, NULL);
 
+#pragma mark -- set capture settings
+    isVideoPortrait = YES;
+    AVCaptureSessionPreset sessionPreset = AVCaptureSessionPreset1280x720;
+    captureVideoSize = [self getVideoSize:sessionPreset isVideoPortrait:isVideoPortrait];
+    
 #pragma mark -- AVCaptureSession init
     captureSession = [[AVCaptureSession alloc] init];
-    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
+    captureSession.sessionPreset = sessionPreset;
     
     captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
@@ -108,7 +127,12 @@
     
     // 保存Connection，用于在SampleBufferDelegate中判断数据来源（是Video/Audio？）
     videoCaptureConnection = [captureVideoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    
+    if (isVideoPortrait) {
+        videoCaptureConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+    } else {
+        videoCaptureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+    }
+
 #pragma mark -- AVCaptureVideoPreviewLayer init
     previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
     previewLayer.frame = self.view.layer.bounds;
@@ -162,8 +186,11 @@
 
 #pragma mark --  返回
 - (void)backButtonEvent:(id)sender {
-    [self stopRecording];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    dispatch_sync(encodeQueue, ^{
+        isRecording = NO;
+        [x264Encoder teardown];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 - (void)recordVideo:(UIButton *)button {
@@ -184,6 +211,10 @@
         h264FilePath = writeH264Streaming.filePath;
         
         videoConfiguration = [VideoConfiguration defaultConfiguration];
+        videoConfiguration.videoSize = captureVideoSize;
+        videoConfiguration.frameRate = 30;
+        videoConfiguration.maxKeyframeInterval = 60;
+        videoConfiguration.bitrate = 1536*1000;
         x264Encoder = [[X264Encoder alloc] initWithVideoConfiguration:videoConfiguration];
         [x264Encoder setOutputObject:writeH264Streaming];
         
@@ -201,6 +232,7 @@
         
         PlayViewController *playViewController = [[PlayViewController alloc] init];
         playViewController.h264FilePath = h264FilePath;
+        playViewController.videoConfiguration = videoConfiguration;
         [weakSelf presentViewController:playViewController animated:YES completion:nil];
     });
 }

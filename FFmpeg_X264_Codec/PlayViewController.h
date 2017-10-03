@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoConfiguration.h"
 
 @interface PlayViewController : UIViewController
 
 @property (strong, nonatomic) NSString *h264FilePath;
+@property (strong, nonatomic) VideoConfiguration *videoConfiguration;
 
 @end

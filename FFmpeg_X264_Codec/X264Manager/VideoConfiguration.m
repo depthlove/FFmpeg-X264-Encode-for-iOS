@@ -11,7 +11,7 @@
 @implementation VideoConfiguration
 
 + (instancetype)defaultConfiguration {
-    VideoConfiguration *videoConfiguration = [[VideoConfiguration alloc] initWithVideoSize:CGSizeMake(1280, 720) frameRate:30 maxKeyframeInterval:60 bitrate:1536*1000 profileLevel:@""];
+    VideoConfiguration *videoConfiguration = [[VideoConfiguration alloc] initWithVideoSize:CGSizeMake(720, 1280) frameRate:30 maxKeyframeInterval:60 bitrate:1536*1000 profileLevel:@""];
     return videoConfiguration;
 }
 

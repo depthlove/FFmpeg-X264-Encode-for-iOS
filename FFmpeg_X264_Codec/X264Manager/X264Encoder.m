@@ -70,7 +70,7 @@ extern "C" {
 //    pCodecCtx->max_qdiff = 4;
 //    pCodecCtx->qcompress = 0.6;
     // Optional Param
-//    pCodecCtx->max_b_frames=3;
+//    pCodecCtx->max_b_frames = 3;
     
     // Set Option
     AVDictionary *param = NULL;
